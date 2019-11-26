@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Entity\SmartPhoneShop.Entity.csproj" />
+    <Folder Include="ApplicationService\" />
+    <Folder Include="DomainService\" />
+  </ItemGroup>
+
+</Project>
