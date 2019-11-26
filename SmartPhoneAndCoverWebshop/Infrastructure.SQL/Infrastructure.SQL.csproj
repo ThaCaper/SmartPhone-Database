@@ -7,7 +7,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Entity\SmartPhoneShop.Entity.csproj" />
     <ProjectReference Include="..\SmartPhoneShop.Core\SmartPhoneShop.Core.csproj" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

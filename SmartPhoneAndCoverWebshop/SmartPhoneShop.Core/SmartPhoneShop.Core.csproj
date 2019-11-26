@@ -6,8 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Entity\SmartPhoneShop.Entity.csproj" />
-    <Folder Include="ApplicationService\" />
-    <Folder Include="DomainService\" />
   </ItemGroup>
 
 </Project>
