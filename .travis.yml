@@ -1,9 +1,9 @@
 language: cSharp
 mono: none
 dotnet: 2.2
-solution: MainSolution/MovieRatingsV2.sln
+solution: SmartPhoneAndCoverWebshop/SmartPhoneAndCoverWebshop.sln
 
 script:
- - dotnet restore MainSolution/MovieRatingsV2.sln
- - dotnet build MainSolution/MovieRatingsV2.sln
- - dotnet test XUnitPerformanceTest/XUnitPerformanceTest.csproj
+ - dotnet restore SmartPhoneAndCoverWebshop/SmartPhoneAndCoverWebshop.sln
+ - dotnet build SmartPhoneAndCoverWebshop/SmartPhoneAndCoverWebshop.sln
+ - dotnet test SmartPhoneAndCoverWebshop/SmartPhoneAndCoverWebshop.csproj
