@@ -10,6 +10,12 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
 
         private ISmartPhoneRepository _smartPhoneRepository;
 
+        private DatabaseContext _context;
+        public CoverRepository(DatabaseContext context)
+        {
+            _context = context;
+        }
+
         public SmartPhone CreateSmartPhone(SmartPhone CreatedSmartPhone)
         {
             return _smartPhoneRepository.CreateSmartPhone(CreatedSmartPhone);
@@ -33,7 +39,10 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
 
         public SmartPhone UpdateSmartPhone(SmartPhone UpdateSmartPhone)
         {
-            return _smartPhoneRepository.UpdateSmartPhone(UpdateSmartPhone);
+            _context.Attach(UpdateSmartPhone).State = EntityState.Modified;
+            _context.Update(UpdateSmartPhone);
+            _context.SaveChanges();
+            return UpdateSmartPhone;
 
         }
 
