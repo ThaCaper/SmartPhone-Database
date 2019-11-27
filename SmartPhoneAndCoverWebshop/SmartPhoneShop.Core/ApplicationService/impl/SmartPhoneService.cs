@@ -8,7 +8,7 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
     public class SmartPhoneService : ISmartPhoneService
     {
 
-        private ISmartPhoneRepository _smartPhoneRepository;
+        private readonly ISmartPhoneRepository _smartPhoneRepository;
 
 
         public SmartPhoneService(ISmartPhoneRepository smartRepo)

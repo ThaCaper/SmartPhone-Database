@@ -17,6 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.SQL", "Infra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartPhoneShop.API", "SmartPhoneShop.API\SmartPhoneShop.API.csproj", "{92A9866D-E5B8-4C96-A81A-6B18F13A8611}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestCore", "TestCore", "{E876B25C-EFE1-4241-96F7-A1CCC2DD984E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCoreService", "TestCoreService\TestCoreService.csproj", "{5324D63F-1705-47CD-84CF-F70D3A5BA563}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,10 @@ Global
 		{92A9866D-E5B8-4C96-A81A-6B18F13A8611}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92A9866D-E5B8-4C96-A81A-6B18F13A8611}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92A9866D-E5B8-4C96-A81A-6B18F13A8611}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5324D63F-1705-47CD-84CF-F70D3A5BA563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5324D63F-1705-47CD-84CF-F70D3A5BA563}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5324D63F-1705-47CD-84CF-F70D3A5BA563}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5324D63F-1705-47CD-84CF-F70D3A5BA563}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,7 @@ Global
 		{96047BAB-8731-45BD-BFB3-C734F241A265} = {8A001F36-3245-4236-9034-B6FA4B9DE2DE}
 		{E960CE01-6863-43F5-A686-2D39D23AF2EC} = {31B44768-3A16-4BB0-BAAA-FF9E3F59D318}
 		{92A9866D-E5B8-4C96-A81A-6B18F13A8611} = {3A72C769-44E9-45A7-8345-C0198EB958F7}
+		{5324D63F-1705-47CD-84CF-F70D3A5BA563} = {E876B25C-EFE1-4241-96F7-A1CCC2DD984E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3779B33F-2CA8-4960-B2EA-5FFDD5D5ACA9}
