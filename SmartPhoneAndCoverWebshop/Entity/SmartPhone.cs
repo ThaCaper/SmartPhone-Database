@@ -1,6 +1,6 @@
 ﻿namespace SmartPhoneShop.Entity
 {
-    public class SmartPhone
+    public class SmartPhone: Product
     {
         public Product Product { get; set; }
         public string OS { get; set; }
