@@ -11,11 +11,7 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
         private readonly ISmartPhoneRepository _smartPhoneRepository;
 
 
-<<<<<<< HEAD
-        public SmartPhoneService(DatabaseContext context)
-=======
         public SmartPhoneService(ISmartPhoneRepository smartRepo)
->>>>>>> Dev
         {
             _smartPhoneRepository = smartRepo;
         }
