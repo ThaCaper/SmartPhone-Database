@@ -56,5 +56,6 @@ namespace Infrastructure.SQL
        public DbSet<Product> Products { get; set; }
        public DbSet<ShoppingCart> Carts { get; set; }
        public DbSet<Order> Orders { get; set; } 
+       public DbSet<OrderLine> OrderLines { get; set; }
     }
 }
