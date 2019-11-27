@@ -8,8 +8,6 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
     {
         private IUserRepository _userRepository;
 
-
-
         public UserService(IUserRepository userRepo)
         {
             _userRepository = userRepo;
