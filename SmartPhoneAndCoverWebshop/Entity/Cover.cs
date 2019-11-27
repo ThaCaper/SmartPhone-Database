@@ -2,6 +2,7 @@
 {
     public class Cover
     {
+        public int Id { get; set; }
         public Product Product { get; set; }
         public  string TypeOfModel { get; set; }
         public string TypeOfBrand { get; set; }
