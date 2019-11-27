@@ -38,7 +38,7 @@ namespace SmartPhoneShop.API
             {
                 op.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
-
+            
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
