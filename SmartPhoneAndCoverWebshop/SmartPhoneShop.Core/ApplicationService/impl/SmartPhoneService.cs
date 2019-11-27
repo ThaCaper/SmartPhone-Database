@@ -8,10 +8,10 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
     public class SmartPhoneService : ISmartPhoneService
     {
 
-        private ISmartPhoneRepository _smartPhoneRepository;
+        private readonly ISmartPhoneRepository _smartPhoneRepository;
 
-        private DatabaseContext _context;
-        public CoverRepository(DatabaseContext context)
+
+        public SmartPhoneService(DatabaseContext context)
         {
             _context = context;
         }
