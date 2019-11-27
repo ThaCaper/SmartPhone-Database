@@ -1,8 +1,8 @@
 ﻿namespace SmartPhoneShop.Entity
 {
-    public class Cover : Product
+    public class Cover
     {
-        
+        public int Id { get; set; }
         public  string TypeOfModel { get; set; }
         public string TypeOfBrand { get; set; }
         public string Color { get; set; }

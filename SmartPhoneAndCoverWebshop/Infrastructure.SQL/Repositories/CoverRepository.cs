@@ -35,6 +35,7 @@ namespace Infrastructure.SQL.Repositories
         public Cover GetCoverById(int id)
         {
             return _context.Covers.FirstOrDefault(c => c.Id == id);
+            
         }
 
         public Cover UpdateCover(Cover UpdateCover)
