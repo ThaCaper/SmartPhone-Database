@@ -39,7 +39,6 @@ namespace SmartPhoneShop.API
                 op.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
 
-
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
@@ -63,7 +62,6 @@ namespace SmartPhoneShop.API
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
             app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseMvc();
