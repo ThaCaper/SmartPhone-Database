@@ -1,33 +1,48 @@
-﻿using SmartPhoneShop.Entity;
+﻿using System.Collections.Generic;
+using SmartPhoneShop.Core.DomainService;
+using SmartPhoneShop.Entity;
 
 namespace SmartPhoneShop.Core.ApplicationService.impl
 {
     public class UserService : IUserService
     {
-        private IUserRepository _UserRepository;
-        public User CreatUser(User user)
+        private IUserRepository _userRepository;
+
+
+
+        public UserService(IUserRepository userRepo)
         {
-            throw new System.NotImplementedException();
+            _userRepository = userRepo;
+        }
+
+
+
+        public User CreateUser(User user)
+        {
+            return _userRepository.CreateUser(user);
         }
 
         public User DeleteUser(int id)
         {
-            throw new System.NotImplementedException();
+            return _userRepository.DeleteUser(id);
         }
 
-        public User GetAllUser()
+        public List<User> GetAllUser()
         {
-            throw new System.NotImplementedException();
+            return _userRepository.GetAllUser();
         }
 
         public User GetUserById(int id)
         {
-            throw new System.NotImplementedException();
+
+            return _userRepository.GetUserById(id);
+
         }
 
-        public User UpdateUser(User UpdateUser)
+        public User UpdateUser(User updateUser)
         {
-            throw new System.NotImplementedException();
+            return _userRepository.UpdateUser(updateUser);
         }
+
     }
 }
