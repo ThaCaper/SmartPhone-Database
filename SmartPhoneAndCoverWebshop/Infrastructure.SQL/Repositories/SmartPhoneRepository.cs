@@ -42,9 +42,11 @@ namespace Infrastructure.SQL.Repositories
 
         public SmartPhone DeleteSmartPhone(int id)
         {
-            var coverRemove = _context.Remove(new Cover { Id = id }).Entity;
+
+            var spRemove = _context.Remove(new SmartPhone { Id = id }).Entity;
             _context.SaveChanges();
-            return coverRemove;
+            return spRemove;
+
         }
     }
 }
