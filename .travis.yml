@@ -6,4 +6,4 @@ solution: SmartPhoneAndCoverWebshop/SmartPhoneAndCoverWebshop.sln
 script:
  - dotnet restore SmartPhoneAndCoverWebshop/SmartPhoneAndCoverWebshop.sln
  - dotnet build SmartPhoneAndCoverWebshop/SmartPhoneAndCoverWebshop.sln
- - dotnet test TestCoreService/TestCoreService.csproj
+ - dotnet test SmartPhoneAndCoverWebshop/TestCoreService/TestCoreService.csproj
