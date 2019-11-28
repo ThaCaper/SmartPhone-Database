@@ -47,6 +47,13 @@ namespace Infrastructure.SQL
                 .HasOne(ol => ol.Cover.ProductType)
                 .WithMany(p => p.OrderLines)
                 .HasForeignKey(ol => ol.ProductId);
+
+            modelBuilder.Entity<User>()
+                .OwnsOne(a => a.Address);
+
+            modelBuilder.Entity<User>()
+                .HasKey(u => new {u.Id});
+
         }
 
        public DbSet<User> Users { get; set; }
