@@ -4,7 +4,6 @@ namespace SmartPhoneShop.Entity
 {
     public class SmartPhone
     {
-        
         public Product ProductType { get; set; }
         public string OS { get; set; }
         public string CPU_Type { get; set; }
