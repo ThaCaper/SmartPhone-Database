@@ -28,37 +28,50 @@ namespace SmartPhoneShop.API.Controllers
 
         // GET: api/Covers
         [HttpGet]
-        public List<Cover> Get()
+        public ActionResult<IEnumerable<Cover>> GetAllCovers()
         {
             return _coverService.GetAllCovers();
         }
 
         // GET: api/Covers/5
-        [HttpGet("{id}", Name = "Get")]
-        public Cover Get(int id)
+        [HttpGet("{id}")]
+        public ActionResult<Cover> GetCoverById(int id)
         {
             return _coverService.GetCoverById(id);
         }
 
         // POST: api/Covers
         [HttpPost]
-        public void Post([FromBody] Cover cover)
+        public ActionResult<Cover> Post([FromBody] Cover cover)
         {
-            _coverService.CreateCover(cover);
+            return _coverService.CreateCover(cover);
         }
 
         // PUT: api/Covers/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Cover cover)
+        public ActionResult<User> Put(int id, [FromBody] Cover cover)
         {
-            _coverService.UpdateCover(cover);
+            try
+            {
+                return Ok(_coverService.UpdateCover(cover));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<User> Delete(int id)
         {
-            _coverService.DeleteCover(id);
+           var co = _coverService.DeleteCover(id);
+           if (co == null)
+           {
+               return StatusCode(404, "did not fund any cover with that id");
+           }
+
+           return NoContent();
         }
     }
 }

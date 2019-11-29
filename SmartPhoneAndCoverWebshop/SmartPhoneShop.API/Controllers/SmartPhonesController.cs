@@ -27,23 +27,23 @@ namespace SmartPhoneShop.API.Controllers
 
         // GET: api/SmartPhones
         [HttpGet]
-        public List<SmartPhone> Get()
+        public ActionResult<IEnumerable<SmartPhone>> GetAllSmartphones()
         {
             return _smartPhoneService.GetAllSmartPhone();
         }
 
         // GET: api/SmartPhones/5
         [HttpGet("{id}")]
-        public ActionResult<SmartPhone> Get(int id)
+        public ActionResult<SmartPhone> GetSmartphoneById(int id)
         {
             return _smartPhoneService.GetSmartPhoneById(id);
         }
 
         // POST: api/SmartPhones
         [HttpPost]
-        public void Post([FromBody] SmartPhone phone)
+        public ActionResult<SmartPhone> Post([FromBody] SmartPhone phone)
         {
-            _smartPhoneService.CreateSmartPhone(phone);
+            return _smartPhoneService.CreateSmartPhone(phone);
         }
 
         // PUT: api/SmartPhones/5
@@ -64,9 +64,16 @@ namespace SmartPhoneShop.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<SmartPhone> Delete(int id)
         {
-            _smartPhoneService.DeleteSmartPhone(id);
+
+            var deletephone =_smartPhoneService.DeleteSmartPhone(id);
+            if (deletephone == null)
+            {
+                return StatusCode(404, "did not find any smartphone with that id"+ id);
+            }
+
+            return NoContent();
         }
     }
 }

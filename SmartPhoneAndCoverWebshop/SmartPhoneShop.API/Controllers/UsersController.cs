@@ -24,37 +24,52 @@ namespace SmartPhoneShop.API.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public List<User> Get()
+        public ActionResult<IEnumerable<User>> GetAllUsers()
         {
             return _userService.GetAllUser();
         }
 
         // GET: api/Users/5
-        [HttpGet("{id}", Name = "Get")]
-        public User Get(int id)
+        [HttpGet("{id}")]
+        public ActionResult<User> GetUserById(int id)
         {
             return _userService.GetUserById(id);
         }
 
         // POST: api/Users
         [HttpPost]
-        public void Post([FromBody] User user)
+        public ActionResult<User> Post([FromBody] User user)
         {
-            _userService.CreateUser(user);
+          return  _userService.CreateUser(user);
         }
 
         // PUT: api/Users/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User user)
+        public ActionResult<User> Put(int id, [FromBody] User user)
         {
-            _userService.UpdateUser(user);
+            try
+            {
+                return Ok(_userService.UpdateUser(user));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<User> Delete(int id)
         {
-            _userService.DeleteUser(id);
+            
+           var userToBeDelete = _userService.DeleteUser(id);
+           if (userToBeDelete == null)
+           {
+               return StatusCode(404, "did not find any user with that id"+ id);
+           }
+
+           return NoContent();
         }
     }
 }
