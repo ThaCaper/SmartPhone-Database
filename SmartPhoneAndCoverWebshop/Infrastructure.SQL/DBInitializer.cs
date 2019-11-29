@@ -27,7 +27,7 @@ namespace Infrastructure.SQL
                     Name = "iphone",
                     Price = 6500,
                     OS = "IOS",
-                    CPU_Type = "A7",
+                    CpuType = "A7",
                     Camera = "12mega px",
                     Memory = 64,
                     Screen = 5.5
@@ -42,7 +42,7 @@ namespace Infrastructure.SQL
                 Price = 6500,
             
             OS = "Windows",
-            CPU_Type = "q2",
+            CpuType = "q2",
             Camera = "12mega px",
             Memory = 124,
             Screen = 5.5
