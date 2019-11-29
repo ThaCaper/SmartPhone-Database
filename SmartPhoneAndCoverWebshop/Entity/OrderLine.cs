@@ -4,9 +4,11 @@ namespace SmartPhoneShop.Entity
 {
     public class OrderLine
     {
+
+        public  Product Product { get; set; }
+
         public int ProductId { get; set; }
-        public SmartPhone SmartPhone { get; set; }
-        public Cover Cover { get; set; }
+        
 
         public int OrderId { get; set; }
         public Order Order { get; set; }

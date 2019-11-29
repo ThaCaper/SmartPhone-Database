@@ -13,17 +13,8 @@ namespace Infrastructure.SQL
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<SmartPhone>()
-                .OwnsOne(p => p.ProductType);
-
-            modelBuilder.Entity<SmartPhone>()
-                .HasKey(sp => new {sp.Id});
-
-            modelBuilder.Entity<Cover>()
-                .OwnsOne(p => p.ProductType);
-
-            modelBuilder.Entity<Cover>()
-                .HasKey(c => new {c.Id});
+            modelBuilder.Entity<Product>()
+                .HasKey(p => new {p.Id});
 
             modelBuilder.Entity<Order>()
                 .HasOne(u => u.User)
@@ -31,7 +22,7 @@ namespace Infrastructure.SQL
                 .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<OrderLine>()
-                .HasKey(ca => new {ca.OrderId, ca.ProductId});
+                .HasKey(ol => new {ol.ProductId, ol.OrderId});
 
             modelBuilder.Entity<OrderLine>()
                 .HasOne(ca => ca.Order)
@@ -39,17 +30,9 @@ namespace Infrastructure.SQL
                 .HasForeignKey(ca => ca.OrderId);
 
             modelBuilder.Entity<OrderLine>()
-                .HasOne(ol => ol.SmartPhone.ProductType)
+                .HasOne(ol => ol.Product)
                 .WithMany(p => p.OrderLines)
                 .HasForeignKey(ol => ol.ProductId);
-            
-            modelBuilder.Entity<OrderLine>()
-                .HasOne(ol => ol.Cover.ProductType)
-                .WithMany(p => p.OrderLines)
-                .HasForeignKey(ol => ol.ProductId);
-
-            modelBuilder.Entity<User>()
-                .OwnsOne(a => a.Address);
 
             modelBuilder.Entity<User>()
                 .HasKey(u => new {u.Id});
@@ -59,9 +42,8 @@ namespace Infrastructure.SQL
        public DbSet<User> Users { get; set; }
        public DbSet<SmartPhone> SmartPhones { get; set; }
        public DbSet<Cover> Covers { get; set; }
-       public DbSet<Address> Addresses { get; set; }
        public DbSet<Product> Products { get; set; }
-       public DbSet<ShoppingCart> Carts { get; set; }
+       //public DbSet<ShoppingCart> Carts { get; set; }
        public DbSet<Order> Orders { get; set; } 
        public DbSet<OrderLine> OrderLines { get; set; }
     }
