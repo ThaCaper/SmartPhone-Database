@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartPhoneShop.Core.ApplicationService;
@@ -13,17 +14,12 @@ namespace SmartPhoneShop.API.Controllers
     [ApiController]
     public class SmartPhonesController : ControllerBase
     {
-
-
         private readonly ISmartPhoneService _smartPhoneService;
 
         public SmartPhonesController(ISmartPhoneService smartPhoneService)
         {
             _smartPhoneService = smartPhoneService;
         }
-
-
-
 
         // GET: api/SmartPhones
         [HttpGet]
@@ -40,6 +36,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // POST: api/SmartPhones
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult<SmartPhone> Post([FromBody] SmartPhone phone)
         {
@@ -47,10 +44,10 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // PUT: api/SmartPhones/5
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public ActionResult<SmartPhone> Put(int id, [FromBody] SmartPhone phone)
         {
-
             try
             {
                 return Ok(_smartPhoneService.UpdateSmartPhone(phone));
@@ -59,20 +56,18 @@ namespace SmartPhoneShop.API.Controllers
             {
                 return BadRequest(e.Message);
             }
-
         }
 
         // DELETE: api/ApiWithActions/5
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public ActionResult<SmartPhone> Delete(int id)
         {
-
             var deletephone =_smartPhoneService.DeleteSmartPhone(id);
             if (deletephone == null)
             {
                 return StatusCode(404, "did not find any smartphone with that id"+ id);
             }
-
             return NoContent();
         }
     }

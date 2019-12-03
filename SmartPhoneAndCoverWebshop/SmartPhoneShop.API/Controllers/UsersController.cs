@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartPhoneShop.Core.ApplicationService;
@@ -13,14 +14,12 @@ namespace SmartPhoneShop.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-
         private readonly IUserService _userService;
 
         public UsersController(IUserService userservice)
         {
             _userService = userservice;
         }
-
 
         // GET: api/Users
         [HttpGet]
@@ -37,6 +36,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // POST: api/Users
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult<User> Post([FromBody] User user)
         {
@@ -44,6 +44,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // PUT: api/Users/5
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public ActionResult<User> Put(int id, [FromBody] User user)
         {
@@ -55,20 +56,18 @@ namespace SmartPhoneShop.API.Controllers
             {
                 return BadRequest(e.Message);
             }
-
         }
 
         // DELETE: api/ApiWithActions/5
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public ActionResult<User> Delete(int id)
         {
-            
-           var userToBeDelete = _userService.DeleteUser(id);
+            var userToBeDelete = _userService.DeleteUser(id);
            if (userToBeDelete == null)
            {
                return StatusCode(404, "did not find any user with that id"+ id);
            }
-
            return NoContent();
         }
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartPhoneShop.Core.ApplicationService;
@@ -13,18 +14,12 @@ namespace SmartPhoneShop.API.Controllers
     [ApiController]
     public class CoversController : ControllerBase
     {
-
-
         private readonly ICoverService _coverService;
 
         public CoversController(ICoverService coverService)
         {
             _coverService = coverService;
         }
-
-
-
-
 
         // GET: api/Covers
         [HttpGet]
@@ -41,6 +36,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // POST: api/Covers
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public ActionResult<Cover> Post([FromBody] Cover cover)
         {
@@ -48,6 +44,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // PUT: api/Covers/5
+        [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
         public ActionResult<User> Put(int id, [FromBody] Cover cover)
         {
@@ -62,6 +59,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // DELETE: api/ApiWithActions/5
+        [Authorize(Roles = "Administrator")]
         [HttpDelete("{id}")]
         public ActionResult<User> Delete(int id)
         {
