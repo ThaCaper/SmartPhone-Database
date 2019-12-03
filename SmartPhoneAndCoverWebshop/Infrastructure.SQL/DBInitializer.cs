@@ -17,7 +17,7 @@ namespace Infrastructure.SQL
 
         public void Initialize(DatabaseContext context)
         {
-            context.Database.EnsureDeleted();
+           
             context.Database.EnsureCreated();
 
             List<SmartPhone> ListOfSmartphones = new List<SmartPhone>

@@ -73,7 +73,6 @@ namespace SmartPhoneShop.API
 
 
 
-
             if (Environment.IsDevelopment())
             {
                 services.AddDbContext<DatabaseContext>(
