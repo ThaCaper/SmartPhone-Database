@@ -22,6 +22,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // GET: api/Users
+        [Authorize(Roles = "Administrator")]
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetAllUsers()
         {
@@ -29,6 +30,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // GET: api/Users/5
+        [Authorize(Roles = "Administrator")]
         [HttpGet("{id}")]
         public ActionResult<User> GetUserById(int id)
         {

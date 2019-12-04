@@ -41,6 +41,17 @@ namespace Infrastructure.SQL.Repositories
         public User UpdateUser(User UpdatedUser)
         {
             _context.Attach(UpdatedUser).State = EntityState.Modified;
+            _context.Entry(UpdatedUser).Collection(u => u.ListOfOrders).IsModified = true;
+
+            var orders = _context.Orders.Where(o => o.User.Id == UpdatedUser.Id
+                                                    && !UpdatedUser.ListOfOrders.Exists(us => us.Id == o.Id));
+
+            foreach (var order in orders)
+            {
+                order.User = null;
+                _context.Entry(order).Reference(o => o.User)
+                    .IsModified = true;
+            }
             _context.Update(UpdatedUser);
             _context.SaveChanges();
             return UpdatedUser;
