@@ -36,19 +36,14 @@ namespace SmartPhoneShop.API
         public IConfiguration Configuration { get; }
         public IHostingEnvironment Environment { get; }
 
-
-
-       
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             // Create a byte array with random values. This byte array is used
             // to generate a key for signing JWT tokens.
             Byte[] secretBytes = new byte[40];
             Random rand = new Random();
             rand.NextBytes(secretBytes);
-
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
             {
@@ -63,15 +58,7 @@ namespace SmartPhoneShop.API
                 };
             });
 
-
-
-
-
-
-
             services.AddCors(opt => opt.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-
-
 
             if (Environment.IsDevelopment())
             {
@@ -83,16 +70,10 @@ namespace SmartPhoneShop.API
             {
                 services.AddDbContext<DatabaseContext>(
                     opt => opt.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
-
             }
 
-
-
-
-
             services.AddSingleton<IAuthenticationHelper>(new AuthenticationHelper(secretBytes));
-            services.AddTransient<IDBinitializer, DBInitializer>();
-            
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
@@ -111,10 +92,6 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var service = scope.ServiceProvider;
-                    var ctx = service.GetService<DatabaseContext>();
-                    var dbinitializer = service.GetService<IDBinitializer>();
-                    dbinitializer.Initialize(ctx);
 
                 }
                 app.UseDeveloperExceptionPage();
@@ -123,10 +100,6 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-                    var service = scope.ServiceProvider;
-                    var ctx = service.GetService<DatabaseContext>();
-                    var dbinitializer = service.GetService<IDBinitializer>();
-                   dbinitializer.Initialize(ctx);
 
                 }
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.

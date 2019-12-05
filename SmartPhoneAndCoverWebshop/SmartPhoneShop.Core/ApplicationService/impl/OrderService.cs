@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using SmartPhoneShop.Core.DomainService;
 using SmartPhoneShop.Entity;
 
@@ -22,6 +24,25 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
 
         public Order CreateOrder(Order createdOrder)
         {
+            if (createdOrder.User == null || createdOrder.User.Id <= 0)
+            {
+                throw new InvalidDataException("Must have a User");
+            }
+
+            if (_userRepo.GetUserById(createdOrder.User.Id) == null)
+            {
+                throw new InvalidDataException("User not found");
+            }
+
+            if (createdOrder.OrderDate == null)
+            {
+                throw new InvalidDataException("Must have a Order Date");
+            }
+
+            if (createdOrder.DeliveryDate <= DateTime.MinValue)
+            {
+                throw new InvalidDataException("Must have a Delivery Date");
+            }
             return _orderRepo.CreateOrder(createdOrder);
         }
 
