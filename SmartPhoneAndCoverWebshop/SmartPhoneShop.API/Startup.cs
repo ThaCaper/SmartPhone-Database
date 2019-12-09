@@ -79,7 +79,7 @@ namespace SmartPhoneShop.API
 
             services.AddScoped<ISmartPhoneRepository, SmartPhoneRepository>();
             services.AddScoped<ISmartPhoneService, SmartPhoneService>();
-
+            services.AddTransient<IDBInitalzer, DBInitialzer>();
             services.AddScoped<ICoverRepository, CoverRepository>();
             services.AddScoped<ICoverService, CoverService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -92,6 +92,10 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
+                    var sevice = scope.ServiceProvider;
+                    var ctx = sevice.GetService<DatabaseContext>();
+                    var dbIni = sevice.GetService<IDBInitalzer>();
+                    dbIni.Initialize(ctx);
 
                 }
                 app.UseDeveloperExceptionPage();
@@ -100,7 +104,10 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-
+                    var sevice = scope.ServiceProvider;
+                    var ctx = sevice.GetService<DatabaseContext>();
+                    var dbIni = sevice.GetService<IDBInitalzer>();
+                    dbIni.Initialize(ctx);
                 }
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
