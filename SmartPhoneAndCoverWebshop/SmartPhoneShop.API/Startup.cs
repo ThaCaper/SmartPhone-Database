@@ -92,7 +92,9 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-
+                    var service = scope.ServiceProvider;
+                    var ctx = service.GetService<DatabaseContext>();
+                    
                 }
                 app.UseDeveloperExceptionPage();
             }
@@ -100,7 +102,9 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-
+                    var service = scope.ServiceProvider;
+                    var ctx = service.GetService<DatabaseContext>();
+                    ctx.Database.EnsureCreated();
                 }
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
