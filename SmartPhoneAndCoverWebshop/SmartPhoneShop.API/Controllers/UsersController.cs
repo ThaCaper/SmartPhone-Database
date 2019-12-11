@@ -40,9 +40,9 @@ namespace SmartPhoneShop.API.Controllers
         // POST: api/Users
         
         [HttpPost]
-        public ActionResult<User> Post([FromBody] User user)
+        public ActionResult<User> Post([FromBody] PasswordUser user)
         {
-          return  _userService.CreateUser(user);
+            return  _userService.CreateUser(user);
         }
 
         // PUT: api/Users/5
