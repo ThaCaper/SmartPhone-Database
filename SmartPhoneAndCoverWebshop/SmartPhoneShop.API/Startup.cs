@@ -96,7 +96,6 @@ namespace SmartPhoneShop.API
                     var ctx = sevice.GetService<DatabaseContext>();
                     var dbIni = sevice.GetService<IDBInitalzer>();
                     dbIni.Initialize(ctx);
-
                 }
                 app.UseDeveloperExceptionPage();
             }

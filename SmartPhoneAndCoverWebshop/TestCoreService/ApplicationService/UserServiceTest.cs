@@ -1,6 +1,6 @@
 ﻿namespace TestCoreService.ApplicationService
 {
-    public class ShoppingCartServiceTest
+    public class UserServiceTest
     {
         
     }

@@ -52,7 +52,14 @@ namespace Infrastructure.SQL.Repositories
             };
 
             if (user.IsAdmin)
+            {
                 claims.Add(new Claim(ClaimTypes.Role, "Administrator"));
+            }
+
+            if (!user.IsAdmin)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, "PowerUser"));
+            }
 
             var token = new JwtSecurityToken(
                 new JwtHeader(new SigningCredentials(

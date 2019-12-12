@@ -30,7 +30,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // GET: api/Users/5
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "PowerUser, Administrator")]
         [HttpGet("{id}")]
         public ActionResult<User> GetUserById(int id)
         {
