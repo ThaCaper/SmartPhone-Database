@@ -38,7 +38,7 @@ namespace SmartPhoneShop.API.Controllers
         }
 
         // POST: api/Users
-        [Authorize(Roles = "Administrator")]
+        
         [HttpPost]
         public ActionResult<User> Post([FromBody] User user)
         {

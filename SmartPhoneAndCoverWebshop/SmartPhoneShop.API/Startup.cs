@@ -92,6 +92,7 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
+
                     var sevice = scope.ServiceProvider;
                     var ctx = sevice.GetService<DatabaseContext>();
                     var dbIni = sevice.GetService<IDBInitalzer>();
@@ -103,6 +104,7 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
+
                     var sevice = scope.ServiceProvider;
                     var ctx = sevice.GetService<DatabaseContext>();
                     var dbIni = sevice.GetService<IDBInitalzer>();
