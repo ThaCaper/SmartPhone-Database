@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Internal;
 using SmartPhoneShop.Core.ApplicationService;
 using SmartPhoneShop.Entity;
 
@@ -15,6 +16,12 @@ namespace Infrastructure.SQL
 
         public void Initialize(DatabaseContext context)
         {
+            context.Database.EnsureCreated();
+
+            if (context.Users.Any())
+            {
+                return;
+            }
 
             List<SmartPhone> ListOfSmartphones = new List<SmartPhone>
             {

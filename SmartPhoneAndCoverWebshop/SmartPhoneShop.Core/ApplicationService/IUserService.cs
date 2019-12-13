@@ -5,7 +5,7 @@ namespace SmartPhoneShop.Core.ApplicationService
 {
     public interface IUserService
     {
-        User CreateUser(User user);
+        User CreateUser(PasswordUser user);
 
        List<User> GetAllUser();
         User GetUserById(int id);

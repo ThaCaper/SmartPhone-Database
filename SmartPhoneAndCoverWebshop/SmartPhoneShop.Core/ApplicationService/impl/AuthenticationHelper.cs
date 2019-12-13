@@ -48,7 +48,7 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Username)
+                  new Claim(ClaimTypes.Name, user.Username)
             };
 
             if (user.IsAdmin)

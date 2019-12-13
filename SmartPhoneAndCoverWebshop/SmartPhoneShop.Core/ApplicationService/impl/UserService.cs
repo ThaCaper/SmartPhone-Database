@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using Microsoft.IdentityModel.Tokens;
 using SmartPhoneShop.Core.DomainService;
 using SmartPhoneShop.Entity;
 
@@ -8,19 +9,17 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
     public class UserService : IUserService
     {
         private IUserRepository _userRepository;
+        private IAuthenticationHelper _AuthenticationHelper;
 
-        public UserService(IUserRepository userRepo)
+        public UserService( IUserRepository userRepo , IAuthenticationHelper authenticationHelper)
         {
             _userRepository = userRepo;
+
+            _AuthenticationHelper = authenticationHelper;
         }
 
-        public User CreateUser(User user)
+        public User CreateUser(PasswordUser user)
         {
-            if (user.Id <= 0)
-            {
-                throw new InvalidDataException("User not found");
-            }
-
             if (user.FirstName == null)
             {
                 throw new InvalidDataException("Must have a first name");
@@ -60,6 +59,13 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
             {
                 throw new InvalidDataException("Must have a country");
             }
+
+            byte[] passwordHash, passwordSalt;
+            _AuthenticationHelper.CreatePasswordHash( user.Password, out passwordHash, out passwordSalt);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+            
+          
             return _userRepository.CreateUser(user);
         }
 
