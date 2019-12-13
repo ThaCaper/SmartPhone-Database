@@ -10,7 +10,7 @@ namespace SmartPhoneShop.Core.ApplicationService
        List<User> GetAllUser();
         User GetUserById(int id);
 
-        User UpdateUser(User updateUser);
+        User UpdateUser(PasswordUser updateUser);
 
         User DeleteUser(int id);
     }
