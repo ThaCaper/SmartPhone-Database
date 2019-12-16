@@ -73,6 +73,10 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
 
         public SmartPhone GetSmartPhoneById(int id)
         {
+            if (_smartPhoneRepository.GetSmartPhoneById(id) == null)
+            {
+                throw new InvalidDataException("No SmartPhone with id: " + id + " exist");
+            }
             return _smartPhoneRepository.GetSmartPhoneById(id);
         }
 

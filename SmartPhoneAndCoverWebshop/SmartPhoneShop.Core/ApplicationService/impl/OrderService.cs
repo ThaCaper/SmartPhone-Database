@@ -29,11 +29,6 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
                 throw new InvalidDataException("Must have a User");
             }
 
-            if (_userRepo.GetUserById(createdOrder.User.Id) == null)
-            {
-                throw new InvalidDataException("User not found");
-            }
-
             if (createdOrder.OrderDate == null)
             {
                 throw new InvalidDataException("Must have a Order Date");
@@ -53,16 +48,39 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
 
         public Order GetOrderById(int id)
         {
+            if (_orderRepo.GetOrderById(id) == null)
+            {
+                throw new InvalidDataException("No Order with id: " + id + " exist");
+            }
             return _orderRepo.GetOrderById(id);
         }
 
         public Order UpdateOrder(Order updatedOrder)
         {
+            if (updatedOrder.User == null || updatedOrder.User.Id <= 0)
+            {
+                throw new InvalidDataException("Must have a User");
+            }
+
+            if (updatedOrder.OrderDate == null)
+            {
+                throw new InvalidDataException("Must have a Order Date");
+            }
+
+            if (updatedOrder.DeliveryDate <= DateTime.MinValue)
+            {
+                throw new InvalidDataException("Must have a Delivery Date");
+            }
             return _orderRepo.UpdateOrder(updatedOrder);
         }
 
         public Order DeleteOrder(int id)
         {
+            if (_orderRepo.DeleteOrder(id) == null)
+            {
+                throw new InvalidDataException("No Order with id: " + id + " exist");
+            }
+            
             return _orderRepo.DeleteOrder(id);
         }
     }

@@ -135,7 +135,7 @@ namespace TestCoreService.ApplicationService
             ISmartPhoneService service = new SmartPhoneService(smartPhoneRepo.Object);
 
 
-            Exception ex = Assert.Throws<InvalidDataException>(() => service.DeleteSmartPhone(id));
+            Exception ex = Assert.Throws<InvalidDataException>(() => service.GetSmartPhoneById(id));
             Assert.Equal("No SmartPhone with id: " + id + " exist", ex.Message);
         }
 

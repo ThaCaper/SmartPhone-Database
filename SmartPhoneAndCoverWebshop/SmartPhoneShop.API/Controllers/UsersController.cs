@@ -48,7 +48,7 @@ namespace SmartPhoneShop.API.Controllers
         // PUT: api/Users/5
         [Authorize(Roles = "Administrator")]
         [HttpPut("{id}")]
-        public ActionResult<User> Put(int id, [FromBody] User user)
+        public ActionResult<User> Put(int id, [FromBody] PasswordUser user)
         {
             try
             {

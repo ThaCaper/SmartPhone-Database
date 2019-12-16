@@ -147,7 +147,7 @@ namespace TestCoreService.ApplicationService
         }
 
         [Fact]
-        public void ReadUSerById()
+        public void ReadUserById()
         {
             int id = 1;
             var user = new PasswordUser()
