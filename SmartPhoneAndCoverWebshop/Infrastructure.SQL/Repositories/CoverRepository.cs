@@ -8,23 +8,25 @@ namespace Infrastructure.SQL.Repositories
 {
     public class CoverRepository : ICoverRepository
     {
-        private DatabaseContext _context;
+        private readonly DatabaseContext _context;
+
         public CoverRepository(DatabaseContext context)
         {
             _context = context;
         }
-        public Cover CreateCover(Cover CreatedCover)
+
+        public Cover CreateCover(Cover createdCover)
         {
-            _context.Attach(CreatedCover).State = EntityState.Added;
+            _context.Attach(createdCover).State = EntityState.Added;
             _context.SaveChanges();
-            return CreatedCover;
+            return createdCover;
         }
 
         public Cover DeleteCover(int id)
         {
-            var coverRemove = _context.Remove(new Cover { Id = id }).Entity;
+            var coverToRemove = _context.Remove(new Cover {Id = id}).Entity;
             _context.SaveChanges();
-            return coverRemove;
+            return coverToRemove;
         }
 
         public List<Cover> GetAllCovers()
@@ -35,15 +37,14 @@ namespace Infrastructure.SQL.Repositories
         public Cover GetCoverById(int id)
         {
             return _context.Covers.FirstOrDefault(c => c.Id == id);
-            
         }
 
-        public Cover UpdateCover(Cover UpdateCover)
+        public Cover UpdateCover(Cover updatedCover)
         {
-            _context.Attach(UpdateCover).State = EntityState.Modified;
-            _context.Update(UpdateCover);
+            _context.Attach(updatedCover).State = EntityState.Modified;
+            _context.Update(updatedCover);
             _context.SaveChanges();
-            return UpdateCover;
+            return updatedCover;
         }
     }
 }

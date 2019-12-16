@@ -5,13 +5,13 @@ namespace SmartPhoneShop.Core.ApplicationService
 {
     public interface ISmartPhoneService
     {
-        SmartPhone CreateSmartPhone(SmartPhone CreatedSmartPhone);
+        SmartPhone CreateSmartPhone(SmartPhone createdSmartPhone);
 
         List<SmartPhone> GetAllSmartPhone();
 
         SmartPhone GetSmartPhoneById(int id);
 
-        SmartPhone UpdateSmartPhone(SmartPhone UpdateSmartPhone);
+        SmartPhone UpdateSmartPhone(SmartPhone updatedSmartPhone);
 
         SmartPhone DeleteSmartPhone(int id);
     }

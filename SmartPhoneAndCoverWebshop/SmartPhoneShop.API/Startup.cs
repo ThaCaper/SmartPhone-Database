@@ -1,33 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Infrastructure.SQL;
 using Infrastructure.SQL.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Converters;
 using SmartPhoneShop.Core.ApplicationService;
 using SmartPhoneShop.Core.ApplicationService.impl;
 using SmartPhoneShop.Core.DomainService;
 using AuthenticationHelper = Infrastructure.SQL.Repositories.AuthenticationHelper;
 
-
 namespace SmartPhoneShop.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration,IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             Environment = env;
@@ -58,19 +49,16 @@ namespace SmartPhoneShop.API
                 };
             });
 
-            services.AddCors(opt => opt.AddPolicy("AllowSpecificOrigin", builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
+            services.AddCors(opt => opt.AddPolicy("AllowSpecificOrigin",
+                builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
             if (Environment.IsDevelopment())
-            {
                 services.AddDbContext<DatabaseContext>(
                     opt => opt.UseSqlite("Data Source=smartphoneShopApp.db"));
-            }
 
             if (Environment.IsProduction())
-            {
                 services.AddDbContext<DatabaseContext>(
                     opt => opt.UseSqlServer(Configuration.GetConnectionString("defaultConnection")));
-            }
 
             services.AddSingleton<IAuthenticationHelper>(new AuthenticationHelper(secretBytes));
 
@@ -79,7 +67,6 @@ namespace SmartPhoneShop.API
 
             services.AddScoped<ISmartPhoneRepository, SmartPhoneRepository>();
             services.AddScoped<ISmartPhoneService, SmartPhoneService>();
-            services.AddTransient<IDBInitalzer, DBInitialzer>();
             services.AddScoped<ICoverRepository, CoverRepository>();
             services.AddScoped<ICoverService, CoverService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -92,11 +79,9 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-
-                    var sevice = scope.ServiceProvider;
-                    var ctx = sevice.GetService<DatabaseContext>();
-                    var dbIni = sevice.GetService<IDBInitalzer>();
-                    dbIni.Initialize(ctx);
+                    var service = scope.ServiceProvider;
+                    var ctx = service.GetService<DatabaseContext>();
+                    ctx.Database.EnsureCreated();
                 }
                 app.UseDeveloperExceptionPage();
             }
@@ -104,15 +89,15 @@ namespace SmartPhoneShop.API
             {
                 using (var scope = app.ApplicationServices.CreateScope())
                 {
-
-                    var sevice = scope.ServiceProvider;
-                    var ctx = sevice.GetService<DatabaseContext>();
-                    var dbIni = sevice.GetService<IDBInitalzer>();
-                    dbIni.Initialize(ctx);
+                    var service = scope.ServiceProvider;
+                    var ctx = service.GetService<DatabaseContext>();
+                    ctx.Database.EnsureCreated();
                 }
+
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseAuthentication();

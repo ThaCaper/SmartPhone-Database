@@ -5,11 +5,15 @@ namespace SmartPhoneShop.Core.ApplicationService
 {
     public interface ICoverService
     {
-        Cover CreateCover(Cover CreatedCover);
+        Cover CreateCover(Cover createdCover);
+
         Cover GetCoverById(int id);
+        
         Cover DeleteCover(int id);
+        
         List<Cover> GetAllCovers();
-        Cover UpdateCover(Cover UpdateCover);
+        
+        Cover UpdateCover(Cover updatedCover);
 
     }
 }

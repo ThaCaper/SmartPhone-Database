@@ -5,13 +5,13 @@ namespace SmartPhoneShop.Core.DomainService
 {
     public interface ICoverRepository
     {
-        Cover CreateCover(Cover CreatedCover);
+        Cover CreateCover(Cover createdCover);
 
         List<Cover> GetAllCovers();
 
         Cover GetCoverById(int id);
 
-        Cover UpdateCover(Cover UpdateCover);
+        Cover UpdateCover(Cover updatedCover);
 
         Cover DeleteCover(int id);
     }

@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using SmartPhoneShop.Core.DomainService;
 using SmartPhoneShop.Entity;
 
 namespace SmartPhoneShop.Core.ApplicationService.impl
 {
     public class AuthenticationHelper : IAuthenticationHelper
     {
-        private byte[] secretBytes;
+        private readonly byte[] secretBytes;
 
-        public AuthenticationHelper(Byte[] secret)
+        public AuthenticationHelper(byte[] secret)
         {
             secretBytes = secret;
         }
@@ -20,25 +21,24 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
 
         public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            using (var hmac = new HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
 
 
-
         public bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
+            using (var hmac = new HMACSHA512(storedSalt))
             {
-                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-                for (int i = 0; i < computedHash.Length; i++)
-                {
-                    if (computedHash[i] != storedHash[i]) return false;
-                }
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                for (var i = 0; i < computedHash.Length; i++)
+                    if (computedHash[i] != storedHash[i])
+                        return false;
             }
+
             return true;
         }
 
@@ -48,7 +48,7 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
         {
             var claims = new List<Claim>
             {
-                  new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username)
             };
 
             if (user.IsAdmin)
@@ -59,10 +59,10 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
                     new SymmetricSecurityKey(secretBytes),
                     SecurityAlgorithms.HmacSha256)),
                 new JwtPayload(null, // issuer - not needed (ValidateIssuer = false)
-                               null, // audience - not needed (ValidateAudience = false)
-                               claims.ToArray(),
-                               DateTime.Now,               // notBefore
-                               DateTime.Now.AddMinutes(10)));  // expires
+                    null, // audience - not needed (ValidateAudience = false)
+                    claims.ToArray(),
+                    DateTime.Now, // notBefore
+                    DateTime.Now.AddMinutes(10))); // expires
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartPhoneShop.Core.ApplicationService;
 using SmartPhoneShop.Entity;
@@ -16,9 +13,9 @@ namespace SmartPhoneShop.API.Controllers
     {
         private readonly IUserService _userService;
 
-        public UsersController(IUserService userservice)
+        public UsersController(IUserService userService)
         {
-            _userService = userservice;
+            _userService = userService;
         }
 
         // GET: api/Users
@@ -26,7 +23,14 @@ namespace SmartPhoneShop.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetAllUsers()
         {
-            return _userService.GetAllUser();
+            try
+            {
+                return Ok(_userService.GetAllUser());
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Cannot find any Users");
+            }
         }
 
         // GET: api/Users/5
@@ -34,15 +38,23 @@ namespace SmartPhoneShop.API.Controllers
         [HttpGet("{id}")]
         public ActionResult<User> GetUserById(int id)
         {
+            if (id < 0) return BadRequest("Id must have greater than 0");
             return _userService.GetUserById(id);
         }
 
         // POST: api/Users
-        
+
         [HttpPost]
         public ActionResult<User> Post([FromBody] PasswordUser user)
         {
-            return  _userService.CreateUser(user);
+            try
+            {
+                return Ok(_userService.CreateUser(user));
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Cannot create user. Reason: " + e.Message);
+            }
         }
 
         // PUT: api/Users/5
@@ -50,14 +62,10 @@ namespace SmartPhoneShop.API.Controllers
         [HttpPut("{id}")]
         public ActionResult<User> Put(int id, [FromBody] PasswordUser user)
         {
-            try
-            {
-                return Ok(_userService.UpdateUser(user));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            if (id < 1 || id != user.Id) 
+                return BadRequest("Parameter Id and Order Id must be the same");
+
+            return Ok(_userService.UpdateUser(user));
         }
 
         // DELETE: api/ApiWithActions/5
@@ -66,11 +74,10 @@ namespace SmartPhoneShop.API.Controllers
         public ActionResult<User> Delete(int id)
         {
             var userToBeDelete = _userService.DeleteUser(id);
-           if (userToBeDelete == null)
-           {
-               return StatusCode(404, "did not find any user with that id"+ id);
-           }
-           return NoContent();
+            if (userToBeDelete == null) 
+                return StatusCode(404, "did not find any user with that id" + id);
+            
+            return NoContent();
         }
     }
 }

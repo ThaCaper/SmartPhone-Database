@@ -24,9 +24,9 @@ namespace Infrastructure.SQL.Repositories
 
         public Order DeleteOrder(int id)
         {
-            var removed = _ctx.Remove(new Order {Id = id}).Entity;
+            var orderToRemove = _ctx.Remove(new Order {Id = id}).Entity;
             _ctx.SaveChanges();
-            return removed;
+            return orderToRemove;
         }
 
         public List<Order> GetAllOrder()
@@ -55,10 +55,8 @@ namespace Infrastructure.SQL.Repositories
             _ctx.OrderLines.RemoveRange(
                 _ctx.OrderLines.Where(ol => ol.OrderId == updatedOrder.Id));
             //Add all orderlines with updated order information
-            foreach (var ol in newOrderLines)
-            {
+            foreach (var ol in newOrderLines) 
                 _ctx.Entry(ol).State = EntityState.Added;
-            }
             //Update customer relation
             _ctx.Entry(updatedOrder).Reference(o => o.User).IsModified = true;
             // Save it

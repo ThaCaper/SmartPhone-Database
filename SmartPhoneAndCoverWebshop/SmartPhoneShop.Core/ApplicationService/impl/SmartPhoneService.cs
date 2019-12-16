@@ -5,10 +5,8 @@ using SmartPhoneShop.Entity;
 
 namespace SmartPhoneShop.Core.ApplicationService.impl
 {
-
     public class SmartPhoneService : ISmartPhoneService
     {
-
         private readonly ISmartPhoneRepository _smartPhoneRepository;
 
 
@@ -17,108 +15,78 @@ namespace SmartPhoneShop.Core.ApplicationService.impl
             _smartPhoneRepository = smartRepo;
         }
 
-        public SmartPhone CreateSmartPhone(SmartPhone CreatedSmartPhone)
+        public SmartPhone CreateSmartPhone(SmartPhone createdSmartPhone)
         {
-            if (string.IsNullOrEmpty(CreatedSmartPhone.Name))
-            {
+            if (string.IsNullOrEmpty(createdSmartPhone.Name))
                 throw new InvalidDataException("Must have a product name");
-            }
 
-            if (CreatedSmartPhone.Price <= 0)
-            {
-                throw new InvalidDataException("Must have a price");
-            }
+            if (createdSmartPhone.Price <= 0) throw 
+                new InvalidDataException("Must have a price");
 
-            if (string.IsNullOrEmpty(CreatedSmartPhone.Camera))
-            {
+            if (string.IsNullOrEmpty(createdSmartPhone.Camera))
                 throw new InvalidDataException("Phones always have a camera");
-            }
 
-            if (string.IsNullOrEmpty(CreatedSmartPhone.CpuType))
-            {
+            if (string.IsNullOrEmpty(createdSmartPhone.CpuType)) 
                 throw new InvalidDataException("Must have a CPU");
-            }
 
-            if (CreatedSmartPhone.Memory <= 0)
-            {
+            if (createdSmartPhone.Memory <= 0) 
                 throw new InvalidDataException("Must have a certain amount of memory");
-            }
 
-            if (string.IsNullOrEmpty(CreatedSmartPhone.OS))
-            {
+            if (string.IsNullOrEmpty(createdSmartPhone.OS)) 
                 throw new InvalidDataException("Must have a OS");
-            }
 
-            if(CreatedSmartPhone.Screen <= 0)
-            {
+            if (createdSmartPhone.Screen <= 0) 
                 throw new InvalidDataException("Must have a screen size");
-            }
-            return _smartPhoneRepository.CreateSmartPhone(CreatedSmartPhone);
+            
+            return _smartPhoneRepository.CreateSmartPhone(createdSmartPhone);
         }
 
         public SmartPhone DeleteSmartPhone(int id)
         {
             if (_smartPhoneRepository.DeleteSmartPhone(id) == null)
-            {
                 throw new InvalidDataException("No SmartPhone with id: " + id + " exist");
-            }
+            
             var phone = _smartPhoneRepository.DeleteSmartPhone(id);
             return phone;
         }
 
         public List<SmartPhone> GetAllSmartPhone()
         {
-           return _smartPhoneRepository.GetAllSmartPhones();
+            return _smartPhoneRepository.GetAllSmartPhones();
         }
 
         public SmartPhone GetSmartPhoneById(int id)
         {
             if (_smartPhoneRepository.GetSmartPhoneById(id) == null)
-            {
                 throw new InvalidDataException("No SmartPhone with id: " + id + " exist");
-            }
+            
             return _smartPhoneRepository.GetSmartPhoneById(id);
         }
 
-        public SmartPhone UpdateSmartPhone(SmartPhone UpdateSmartPhone)
+        public SmartPhone UpdateSmartPhone(SmartPhone updatedSmartPhone)
         {
-            if (string.IsNullOrEmpty(UpdateSmartPhone.Name))
-            {
+            if (string.IsNullOrEmpty(updatedSmartPhone.Name)) 
                 throw new InvalidDataException("Must have a product name");
-            }
 
-            if (UpdateSmartPhone.Price <= 0)
-            {
+            if (updatedSmartPhone.Price <= 0) 
                 throw new InvalidDataException("Must have a price");
-            }
 
-            if (string.IsNullOrEmpty(UpdateSmartPhone.Camera))
-            {
+            if (string.IsNullOrEmpty(updatedSmartPhone.Camera))
                 throw new InvalidDataException("Phones always have a camera");
-            }
 
-            if (string.IsNullOrEmpty(UpdateSmartPhone.CpuType))
-            {
+            if (string.IsNullOrEmpty(updatedSmartPhone.CpuType)) 
                 throw new InvalidDataException("Must have a CPU");
-            }
 
-            if (UpdateSmartPhone.Memory <= 0)
-            {
+            if (updatedSmartPhone.Memory <= 0) 
                 throw new InvalidDataException("Must have a certain amount of memory");
-            }
 
-            if (string.IsNullOrEmpty(UpdateSmartPhone.OS))
-            {
+            if (string.IsNullOrEmpty(updatedSmartPhone.OS)) 
                 throw new InvalidDataException("Must have a OS");
-            }
 
-            if(UpdateSmartPhone.Screen <= 0)
-            {
+            if (updatedSmartPhone.Screen <= 0)
                 throw new InvalidDataException("Must have a screen size");
-            }
-            return _smartPhoneRepository.UpdateSmartPhone(UpdateSmartPhone);
-
+            
+            return _smartPhoneRepository.UpdateSmartPhone(updatedSmartPhone);
         }
-
     }
 }

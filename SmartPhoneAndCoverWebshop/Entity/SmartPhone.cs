@@ -1,4 +1,4 @@
-﻿using System.Reflection.Metadata;
+﻿
 
 namespace SmartPhoneShop.Entity
 {
@@ -6,9 +6,13 @@ namespace SmartPhoneShop.Entity
     {
       
         public string OS { get; set; }
+
         public string CpuType { get; set; }
+
         public string Camera { get; set; }
+
         public int Memory { get; set; }
+
         public double Screen { get; set; }
     }
 }

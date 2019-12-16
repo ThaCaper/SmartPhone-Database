@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartPhoneShop.Core.ApplicationService;
 using SmartPhoneShop.Entity;
@@ -25,14 +22,24 @@ namespace SmartPhoneShop.API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Cover>> GetAllCovers()
         {
-            return _coverService.GetAllCovers();
+            try
+            {
+                return Ok(_coverService.GetAllCovers());
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Did not find any Covers");
+            }
         }
 
         // GET: api/Covers/5
         [HttpGet("{id}")]
         public ActionResult<Cover> GetCoverById(int id)
         {
-            return _coverService.GetCoverById(id);
+            if (id < 1) 
+                return BadRequest("Id must have greater than 0");
+
+            return Ok(_coverService.GetCoverById(id));
         }
 
         // POST: api/Covers
@@ -40,7 +47,14 @@ namespace SmartPhoneShop.API.Controllers
         [HttpPost]
         public ActionResult<Cover> Post([FromBody] Cover cover)
         {
-            return _coverService.CreateCover(cover);
+            try
+            {
+                return Ok(_coverService.CreateCover(cover));
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Cannot create Covers. Reason: " + e.Message);
+            }
         }
 
         // PUT: api/Covers/5
@@ -48,14 +62,10 @@ namespace SmartPhoneShop.API.Controllers
         [HttpPut("{id}")]
         public ActionResult<User> Put(int id, [FromBody] Cover cover)
         {
-            try
-            {
-                return Ok(_coverService.UpdateCover(cover));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            if (id < 1 || id != cover.Id) 
+                return BadRequest("Parameter Id and Order Id must be the same");
+
+            return Ok(_coverService.UpdateCover(cover));
         }
 
         // DELETE: api/ApiWithActions/5
@@ -63,13 +73,11 @@ namespace SmartPhoneShop.API.Controllers
         [HttpDelete("{id}")]
         public ActionResult<User> Delete(int id)
         {
-           var co = _coverService.DeleteCover(id);
-           if (co == null)
-           {
-               return StatusCode(404, "did not fund any cover with that id");
-           }
+            var cover = _coverService.DeleteCover(id);
+            if (cover == null) 
+                return StatusCode(404, "Did not fund any cover with that id");
 
-           return NoContent();
+            return NoContent();
         }
     }
 }

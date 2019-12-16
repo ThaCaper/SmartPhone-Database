@@ -12,22 +12,12 @@ namespace TestCoreService.ApplicationService
 {
     public class UserServiceTest
     {
-        public UserServiceTest()
-        {
-
-        }
-
-        public void Dispose()
-        {
-
-        }
-
         [Fact]
-        public void CreateUserWithMissingFirstNameThrowsException()
+        public void CreateUserGivesIsAdminFalse()
         {
-            var user = new PasswordUser()
+            var user = new PasswordUser
             {
-                FirstName = null,
+                FirstName = "Bent",
                 LastName = "Nielsen",
                 Email = "bent@1234.dk",
                 PhoneNumber = "12345678",
@@ -35,22 +25,16 @@ namespace TestCoreService.ApplicationService
                 Street = "H.C.Andersen gade 12",
                 ZipCode = "5000",
                 Username = "bn24744",
-                Password = "bent",
-                IsAdmin = false
+                Password = "bent"
             };
 
-            var userRepo = new Mock<IUserRepository>();
-            var auth = new Mock<IAuthenticationHelper>();
-            IUserService service = new UserService(userRepo.Object, auth.Object);
-
-            Exception ex = Assert.Throws<InvalidDataException>(() => service.CreateUser(user));
-            Assert.Equal("Must have a first name", ex.Message);
+            Assert.False(user.IsAdmin);
         }
 
         [Fact]
         public void CreateUserWithBlankFirstNameThrowsException()
         {
-            var user = new PasswordUser()
+            var user = new PasswordUser
             {
                 FirstName = "",
                 LastName = "Nielsen",
@@ -73,11 +57,11 @@ namespace TestCoreService.ApplicationService
         }
 
         [Fact]
-        public void CreateUserGivesIsAdminFalse()
+        public void CreateUserWithMissingFirstNameThrowsException()
         {
-            var user = new PasswordUser()
+            var user = new PasswordUser
             {
-                FirstName = "Bent",
+                FirstName = null,
                 LastName = "Nielsen",
                 Email = "bent@1234.dk",
                 PhoneNumber = "12345678",
@@ -86,17 +70,64 @@ namespace TestCoreService.ApplicationService
                 ZipCode = "5000",
                 Username = "bn24744",
                 Password = "bent",
+                IsAdmin = false
             };
 
-            Assert.False(user.IsAdmin);
+            var userRepo = new Mock<IUserRepository>();
+            var auth = new Mock<IAuthenticationHelper>();
+            IUserService service = new UserService(userRepo.Object, auth.Object);
+
+            Exception ex = Assert.Throws<InvalidDataException>(() => service.CreateUser(user));
+            Assert.Equal("Must have a first name", ex.Message);
+        }
+
+        [Fact]
+        public void DeleteUser()
+        {
+            var id = 1;
+            var user1 = new PasswordUser
+            {
+                Id = id,
+                FirstName = "Bent",
+                LastName = "Nielsen",
+                Email = "bent@1234.dk",
+                PhoneNumber = "12345678",
+                Country = "Denmark",
+                Street = "H.C.Andersen gade 12",
+                ZipCode = "5000",
+                Username = "bn24744",
+                Password = "bent"
+            };
+
+            var userRepo = new Mock<IUserRepository>();
+            userRepo.Setup(x => x.DeleteUser(id)).Returns(user1);
+            var auth = new Mock<IAuthenticationHelper>();
+            IUserService service = new UserService(userRepo.Object, auth.Object);
+
+            var result = service.DeleteUser(id);
+
+            Assert.Equal(user1, result);
+        }
+
+        [Fact]
+        public void DeleteUserGivingNoneExistIdThrowsException()
+        {
+            var id = 0;
+            var userRepo = new Mock<IUserRepository>();
+            userRepo.Setup(x => x.DeleteUser(It.IsAny<int>())).Returns(default(PasswordUser));
+            var auth = new Mock<IAuthenticationHelper>();
+            IUserService service = new UserService(userRepo.Object, auth.Object);
+
+            Exception ex = Assert.Throws<InvalidDataException>(() => service.DeleteUser(id));
+            Assert.Equal("No User with id: " + id + " exist", ex.Message);
         }
 
         [Fact]
         public void ReadAllUsers()
         {
-            List<User> ListOfUsers = new List<User>()
+            var ListOfUsers = new List<User>
             {
-                new PasswordUser()
+                new PasswordUser
                 {
                     FirstName = "Peter",
                     LastName = "Nielsen",
@@ -106,9 +137,9 @@ namespace TestCoreService.ApplicationService
                     Street = "H.C.Andersen gade 12",
                     ZipCode = "5000",
                     Username = "bn24744",
-                    Password = "peter",
+                    Password = "peter"
                 },
-                new PasswordUser()
+                new PasswordUser
                 {
                     FirstName = "Bent",
                     LastName = "Nielsen",
@@ -118,7 +149,7 @@ namespace TestCoreService.ApplicationService
                     Street = "H.C.Andersen gade 12",
                     ZipCode = "5000",
                     Username = "bn24744",
-                    Password = "bent",
+                    Password = "bent"
                 }
             };
 
@@ -135,7 +166,7 @@ namespace TestCoreService.ApplicationService
         [Fact]
         public void ReadUserByGivingNonExistingIdThrowsException()
         {
-            int id = 0;
+            var id = 0;
             var userRepo = new Mock<IUserRepository>();
             userRepo.Setup(x => x.GetUserById(It.IsAny<int>())).Returns(default(User));
             var auth = new Mock<IAuthenticationHelper>();
@@ -149,8 +180,8 @@ namespace TestCoreService.ApplicationService
         [Fact]
         public void ReadUserById()
         {
-            int id = 1;
-            var user = new PasswordUser()
+            var id = 1;
+            var user = new PasswordUser
             {
                 Id = id,
                 FirstName = "Bent",
@@ -161,7 +192,7 @@ namespace TestCoreService.ApplicationService
                 Street = "H.C.Andersen gade 12",
                 ZipCode = "5000",
                 Username = "bn24744",
-                Password = "bent",
+                Password = "bent"
             };
 
             var userRepo = new Mock<IUserRepository>();
@@ -177,7 +208,7 @@ namespace TestCoreService.ApplicationService
         [Fact]
         public void UpdateUser()
         {
-            var user1 = new PasswordUser()
+            var user1 = new PasswordUser
             {
                 FirstName = "Bent",
                 LastName = "Nielsen",
@@ -187,10 +218,10 @@ namespace TestCoreService.ApplicationService
                 Street = "H.C.Andersen gade 12",
                 ZipCode = "5000",
                 Username = "bn24744",
-                Password = "bent",
+                Password = "bent"
             };
 
-            var updatedUser = new PasswordUser()
+            var updatedUser = new PasswordUser
             {
                 FirstName = "Peter",
                 LastName = "Nielsen",
@@ -200,7 +231,7 @@ namespace TestCoreService.ApplicationService
                 Street = "H.C.Andersen gade 12",
                 ZipCode = "5000",
                 Username = "bn24744",
-                Password = "bent",
+                Password = "bent"
             };
 
             user1 = updatedUser;
@@ -218,7 +249,7 @@ namespace TestCoreService.ApplicationService
         [Fact]
         public void UpdateUserWithEmptyFirstNameThrowsException()
         {
-            var user1 = new PasswordUser()
+            var user1 = new PasswordUser
             {
                 FirstName = "Bent",
                 LastName = "Nielsen",
@@ -228,10 +259,10 @@ namespace TestCoreService.ApplicationService
                 Street = "H.C.Andersen gade 12",
                 ZipCode = "5000",
                 Username = "bn24744",
-                Password = "bent",
+                Password = "bent"
             };
 
-            var updatedUser = new PasswordUser()
+            var updatedUser = new PasswordUser
             {
                 LastName = "Nielsen",
                 Email = "bent@1234.dk",
@@ -240,7 +271,7 @@ namespace TestCoreService.ApplicationService
                 Street = "H.C.Andersen gade 12",
                 ZipCode = "5000",
                 Username = "bn24744",
-                Password = "bent",
+                Password = "bent"
             };
 
             user1 = updatedUser;
@@ -253,47 +284,5 @@ namespace TestCoreService.ApplicationService
             Exception ex = Assert.Throws<InvalidDataException>(() => service.UpdateUser(user1));
             Assert.Equal("Must have a first name", ex.Message);
         }
-
-        [Fact]
-        public void DeleteUser()
-        {
-            int id = 1;
-            var user1 = new PasswordUser()
-            {
-                Id = id,
-                FirstName = "Bent",
-                LastName = "Nielsen",
-                Email = "bent@1234.dk",
-                PhoneNumber = "12345678",
-                Country = "Denmark",
-                Street = "H.C.Andersen gade 12",
-                ZipCode = "5000",
-                Username = "bn24744",
-                Password = "bent",
-            };
-
-            var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(x => x.DeleteUser(id)).Returns(user1);
-            var auth = new Mock<IAuthenticationHelper>();
-            IUserService service = new UserService(userRepo.Object, auth.Object);
-
-            var result = service.DeleteUser(id);
-            
-            Assert.Equal(user1, result);
-        }
-
-        [Fact]
-        public void DeleteUserGivingNoneExistIdThrowsException()
-        {
-            int id = 0;
-            var userRepo = new Mock<IUserRepository>();
-            userRepo.Setup(x => x.DeleteUser(It.IsAny<int>())).Returns(default(PasswordUser));
-            var auth = new Mock<IAuthenticationHelper>();
-            IUserService service = new UserService(userRepo.Object, auth.Object);
-
-            Exception ex = Assert.Throws<InvalidDataException>(() => service.DeleteUser(id));
-            Assert.Equal("No User with id: " + id + " exist", ex.Message);
-        }
-
     }
 }

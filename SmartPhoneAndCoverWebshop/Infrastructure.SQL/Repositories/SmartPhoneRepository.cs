@@ -8,23 +8,23 @@ namespace Infrastructure.SQL.Repositories
 {
     public class SmartPhoneRepository : ISmartPhoneRepository
     {
+        private readonly DatabaseContext _context;
 
-        private DatabaseContext _context;
         public SmartPhoneRepository(DatabaseContext context)
         {
             _context = context;
         }
 
-        public SmartPhone CreateSmartPhone(SmartPhone CreatedSP)
+        public SmartPhone CreateSmartPhone(SmartPhone createdSmartPhone)
         {
-            _context.Attach(CreatedSP).State = EntityState.Added;
+            _context.Attach(createdSmartPhone).State = EntityState.Added;
             _context.SaveChanges();
-            return CreatedSP;
+            return createdSmartPhone;
         }
 
         public List<SmartPhone> GetAllSmartPhones()
         {
-           return _context.SmartPhones.ToList();
+            return _context.SmartPhones.ToList();
         }
 
         public SmartPhone GetSmartPhoneById(int id)
@@ -32,21 +32,19 @@ namespace Infrastructure.SQL.Repositories
             return _context.SmartPhones.FirstOrDefault(c => c.Id == id);
         }
 
-        public SmartPhone UpdateSmartPhone(SmartPhone UpdatedSP)
+        public SmartPhone UpdateSmartPhone(SmartPhone updatedSmartPhone)
         {
-            _context.Attach(UpdatedSP).State = EntityState.Modified;
-            _context.Update(UpdatedSP);
+            _context.Attach(updatedSmartPhone).State = EntityState.Modified;
+            _context.Update(updatedSmartPhone);
             _context.SaveChanges();
-            return UpdatedSP;
+            return updatedSmartPhone;
         }
 
         public SmartPhone DeleteSmartPhone(int id)
         {
-
-            var spRemove = _context.Remove(new SmartPhone { Id = id }).Entity;
+            var smartPhoneToRemove = _context.Remove(new SmartPhone {Id = id}).Entity;
             _context.SaveChanges();
-            return spRemove;
-
+            return smartPhoneToRemove;
         }
     }
 }

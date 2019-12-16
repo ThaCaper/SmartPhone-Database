@@ -8,24 +8,25 @@ namespace Infrastructure.SQL.Repositories
 {
     public class UserRepository : IUserRepository
     {
+        private readonly DatabaseContext _context;
 
-        private DatabaseContext _context;
         public UserRepository(DatabaseContext context)
         {
             _context = context;
         }
-        public User CreateUser(User CreatedUser)
+
+        public User CreateUser(User createdUser)
         {
-            _context.Attach(CreatedUser).State = EntityState.Added;
+            _context.Attach(createdUser).State = EntityState.Added;
             _context.SaveChanges();
-            return CreatedUser;
+            return createdUser;
         }
 
         public User DeleteUser(int id)
         {
-            var UserRemove = _context.Remove(new User { Id = id }).Entity;
+            var userToRemove = _context.Remove(new User {Id = id}).Entity;
             _context.SaveChanges();
-            return UserRemove;
+            return userToRemove;
         }
 
         public List<User> GetAllUser()
@@ -38,13 +39,13 @@ namespace Infrastructure.SQL.Repositories
             return _context.Users.FirstOrDefault(c => c.Id == id);
         }
 
-        public User UpdateUser(User UpdatedUser)
+        public User UpdateUser(User updatedUser)
         {
-            _context.Attach(UpdatedUser).State = EntityState.Modified;
-            _context.Entry(UpdatedUser).Collection(u => u.ListOfOrders).IsModified = true;
+            _context.Attach(updatedUser).State = EntityState.Modified;
+            _context.Entry(updatedUser).Collection(u => u.ListOfOrders).IsModified = true;
 
-            var orders = _context.Orders.Where(o => o.User.Id == UpdatedUser.Id
-                                                    && !UpdatedUser.ListOfOrders.Exists(us => us.Id == o.Id));
+            var orders = _context.Orders.Where(o => o.User.Id == updatedUser.Id
+                                                    && !updatedUser.ListOfOrders.Exists(us => us.Id == o.Id));
 
             foreach (var order in orders)
             {
@@ -52,9 +53,10 @@ namespace Infrastructure.SQL.Repositories
                 _context.Entry(order).Reference(o => o.User)
                     .IsModified = true;
             }
-            _context.Update(UpdatedUser);
+
+            _context.Update(updatedUser);
             _context.SaveChanges();
-            return UpdatedUser;
+            return updatedUser;
         }
     }
 }

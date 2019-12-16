@@ -12,60 +12,10 @@ namespace TestCoreService.ApplicationService
 {
     public class CoverServiceTest
     {
-
-        public CoverServiceTest()
-        {
-        }
-
-        public void Dispose()
-        {
-
-        }
-
-        [Fact]
-        public void CreateCoverWithMissingNameThrowsException()
-        {
-            var coverRepo = new Mock<ICoverRepository>();
-            ICoverService service = new CoverService(coverRepo.Object);
-
-            var cover = new Cover()
-            {
-                Color = "blue",
-                Material = "plastic",
-                TypeOfBrand = "Apple",
-                TypeOfModel = "iPhone6",
-                Stock = 10,
-                Price = 1234
-            };
-            Exception ex = Assert.Throws<InvalidDataException>(() => service.CreateCover(cover));
-            Assert.Equal("Must have a product name", ex.Message);
-
-        }
-
-
-        [Fact]
-        public void CreateCoverWithNoPriceThrowsException()
-        {
-            var coverRepo = new Mock<ICoverRepository>();
-            ICoverService service = new CoverService(coverRepo.Object);
-
-            var cover = new Cover()
-            {
-                Color = "blue",
-                Material = "plastic",
-                TypeOfBrand = "Apple",
-                TypeOfModel = "iPhone6",
-                Name = "Panser",
-                Stock = 10,
-            };
-            Exception ex = Assert.Throws<InvalidDataException>(() => service.CreateCover(cover));
-            Assert.Equal("Must have a price", ex.Message);
-        }
-
         [Fact]
         public void CreateCover()
         {
-            var cover = new Cover()
+            var cover = new Cover
             {
                 Color = "blue",
                 Material = "plastic",
@@ -86,11 +36,88 @@ namespace TestCoreService.ApplicationService
         }
 
         [Fact]
+        public void CreateCoverWithMissingNameThrowsException()
+        {
+            var coverRepo = new Mock<ICoverRepository>();
+            ICoverService service = new CoverService(coverRepo.Object);
+
+            var cover = new Cover
+            {
+                Color = "blue",
+                Material = "plastic",
+                TypeOfBrand = "Apple",
+                TypeOfModel = "iPhone6",
+                Stock = 10,
+                Price = 1234
+            };
+            Exception ex = Assert.Throws<InvalidDataException>(() => service.CreateCover(cover));
+            Assert.Equal("Must have a product name", ex.Message);
+        }
+
+
+        [Fact]
+        public void CreateCoverWithNoPriceThrowsException()
+        {
+            var coverRepo = new Mock<ICoverRepository>();
+            ICoverService service = new CoverService(coverRepo.Object);
+
+            var cover = new Cover
+            {
+                Color = "blue",
+                Material = "plastic",
+                TypeOfBrand = "Apple",
+                TypeOfModel = "iPhone6",
+                Name = "Panser",
+                Stock = 10
+            };
+            Exception ex = Assert.Throws<InvalidDataException>(() => service.CreateCover(cover));
+            Assert.Equal("Must have a price", ex.Message);
+        }
+
+        [Fact]
+        public void DeleteCover()
+        {
+            var id = 1;
+            var cover = new Cover
+            {
+                Id = id,
+                Material = "plastic",
+                TypeOfBrand = "Samsung",
+                TypeOfModel = "A10",
+                Color = "blue",
+                Name = "Samsung cover",
+                Price = 100,
+                Stock = 10
+            };
+
+            var coverRepo = new Mock<ICoverRepository>();
+            coverRepo.Setup(x => x.DeleteCover(id)).Returns(cover);
+            ICoverService service = new CoverService(coverRepo.Object);
+
+            var result = service.DeleteCover(id);
+
+            Assert.Equal(cover, result);
+        }
+
+        [Fact]
+        public void DeleteCoverByGivingNonExistingIdThrowsException()
+        {
+            var id = 0;
+            var coverRepo = new Mock<ICoverRepository>();
+            coverRepo.Setup(x => x.DeleteCover(It.IsAny<int>())).Returns(default(Cover));
+            ICoverService service = new CoverService(coverRepo.Object);
+
+
+            Exception ex = Assert.Throws<InvalidDataException>(() => service.DeleteCover(id));
+            Assert.Equal("No Cover with id: " + id + " exist", ex.Message);
+        }
+
+        [Fact]
         public void ReadAllCovers()
         {
-            List<Cover> listOfCovers = new List<Cover>
+            var listOfCovers = new List<Cover>
             {
-                new Cover()
+                new Cover
                 {
                     Material = "plastic",
                     TypeOfBrand = "Samsung",
@@ -100,7 +127,7 @@ namespace TestCoreService.ApplicationService
                     Price = 100,
                     Stock = 10
                 },
-                new Cover()
+                new Cover
                 {
                     Material = "plastic",
                     TypeOfBrand = "Apple",
@@ -120,11 +147,11 @@ namespace TestCoreService.ApplicationService
 
             Assert.Equal(listOfCovers, result);
         }
-        
+
         [Fact]
         public void ReadCoverByGivingNonExistingIdThrowsException()
         {
-            int id = 0;
+            var id = 0;
             var coverRepo = new Mock<ICoverRepository>();
             coverRepo.Setup(x => x.GetCoverById(It.IsAny<int>())).Returns(default(Cover));
             ICoverService service = new CoverService(coverRepo.Object);
@@ -137,8 +164,8 @@ namespace TestCoreService.ApplicationService
         [Fact]
         public void ReadCoverById()
         {
-            int id = 1;
-            var cover = new Cover()
+            var id = 1;
+            var cover = new Cover
             {
                 Material = "plastic",
                 TypeOfBrand = "Apple",
@@ -157,10 +184,11 @@ namespace TestCoreService.ApplicationService
 
             Assert.Equal(cover, result);
         }
+
         [Fact]
         public void UpdateCover()
         {
-            var cover = new Cover()
+            var cover = new Cover
             {
                 Material = "plastic",
                 TypeOfBrand = "Samsung",
@@ -170,7 +198,7 @@ namespace TestCoreService.ApplicationService
                 Price = 100,
                 Stock = 10
             };
-            var updatedCover = new Cover()
+            var updatedCover = new Cover
             {
                 Material = "Plastic",
                 TypeOfBrand = "Apple",
@@ -198,7 +226,7 @@ namespace TestCoreService.ApplicationService
             var coverRepo = new Mock<ICoverRepository>();
             ICoverService service = new CoverService(coverRepo.Object);
 
-            var cover = new Cover()
+            var cover = new Cover
             {
                 Material = "plastic",
                 TypeOfBrand = "Samsung",
@@ -208,7 +236,7 @@ namespace TestCoreService.ApplicationService
                 Price = 100,
                 Stock = 10
             };
-            var updatedCover = new Cover()
+            var updatedCover = new Cover
             {
                 Material = "Plastic",
                 TypeOfBrand = "Apple",
@@ -230,7 +258,7 @@ namespace TestCoreService.ApplicationService
             var coverRepo = new Mock<ICoverRepository>();
             ICoverService service = new CoverService(coverRepo.Object);
 
-            var cover = new Cover()
+            var cover = new Cover
             {
                 Material = "plastic",
                 TypeOfBrand = "Samsung",
@@ -240,7 +268,7 @@ namespace TestCoreService.ApplicationService
                 Price = 100,
                 Stock = 10
             };
-            var updatedCover = new Cover()
+            var updatedCover = new Cover
             {
                 Material = "Plastic",
                 TypeOfBrand = "Apple",
@@ -255,42 +283,5 @@ namespace TestCoreService.ApplicationService
             Assert.Equal("Must have a price", ex.Message);
         }
 
-        [Fact]
-        public void DeleteCover()
-        {
-            var id = 1;
-            var cover = new Cover()
-            {
-                Id = id,
-                Material = "plastic",
-                TypeOfBrand = "Samsung",
-                TypeOfModel = "A10",
-                Color = "blue",
-                Name = "Samsung cover",
-                Price = 100,
-                Stock = 10
-            };
-
-            var coverRepo = new Mock<ICoverRepository>();
-            coverRepo.Setup(x => x.DeleteCover(id)).Returns(cover);
-            ICoverService service = new CoverService(coverRepo.Object);
-
-            var result = service.DeleteCover(id);
-
-            Assert.Equal(cover, result);
-        }
-
-        [Fact]
-        public void DeleteCoverByGivingNonExistingIdThrowsException()
-        {
-            int id = 0;
-            var coverRepo = new Mock<ICoverRepository>();
-            coverRepo.Setup(x => x.DeleteCover(It.IsAny<int>())).Returns(default(Cover));
-            ICoverService service = new CoverService(coverRepo.Object);
-
-
-            Exception ex = Assert.Throws<InvalidDataException>(() => service.DeleteCover(id));
-            Assert.Equal("No Cover with id: " + id + " exist", ex.Message);
-        }
     }
 }

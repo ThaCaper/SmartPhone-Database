@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartPhoneShop.Core.ApplicationService;
 using SmartPhoneShop.Entity;
@@ -23,16 +20,24 @@ namespace SmartPhoneShop.API.Controllers
 
         // GET: api/SmartPhones
         [HttpGet]
-        public ActionResult<IEnumerable<SmartPhone>> GetAllSmartphones()
+        public ActionResult<IEnumerable<SmartPhone>> GetAllSmartPhones()
         {
-            return _smartPhoneService.GetAllSmartPhone();
+            try
+            {
+                return Ok(_smartPhoneService.GetAllSmartPhone());
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Did not find any SmartPhones");
+            }
         }
 
         // GET: api/SmartPhones/5
         [HttpGet("{id}")]
-        public ActionResult<SmartPhone> GetSmartphoneById(int id)
+        public ActionResult<SmartPhone> GetSmartPhoneById(int id)
         {
-            return _smartPhoneService.GetSmartPhoneById(id);
+            if (id < 1) return BadRequest("Id must have greater than 0");
+                return _smartPhoneService.GetSmartPhoneById(id);
         }
 
         // POST: api/SmartPhones
@@ -40,7 +45,14 @@ namespace SmartPhoneShop.API.Controllers
         [HttpPost]
         public ActionResult<SmartPhone> Post([FromBody] SmartPhone phone)
         {
-            return _smartPhoneService.CreateSmartPhone(phone);
+            try
+            {
+                return Ok(_smartPhoneService.CreateSmartPhone(phone));
+            }
+            catch (Exception e)
+            {
+                return BadRequest("Cannot create SmartPhones. Reason: " + e.Message);
+            }
         }
 
         // PUT: api/SmartPhones/5
@@ -48,14 +60,10 @@ namespace SmartPhoneShop.API.Controllers
         [HttpPut("{id}")]
         public ActionResult<SmartPhone> Put(int id, [FromBody] SmartPhone phone)
         {
-            try
-            {
-                return Ok(_smartPhoneService.UpdateSmartPhone(phone));
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            if (id < 1 || id != phone.Id) 
+                return BadRequest("Parameter Id and Order Id must be the same");
+
+            return Ok(_smartPhoneService.UpdateSmartPhone(phone));
         }
 
         // DELETE: api/ApiWithActions/5
@@ -63,11 +71,10 @@ namespace SmartPhoneShop.API.Controllers
         [HttpDelete("{id}")]
         public ActionResult<SmartPhone> Delete(int id)
         {
-            var deletephone =_smartPhoneService.DeleteSmartPhone(id);
-            if (deletephone == null)
-            {
-                return StatusCode(404, "did not find any smartphone with that id"+ id);
-            }
+            var deletePhone = _smartPhoneService.DeleteSmartPhone(id);
+            if (deletePhone == null) 
+                return StatusCode(404, "Did not find any SmartPhone with that id" + id);
+
             return NoContent();
         }
     }

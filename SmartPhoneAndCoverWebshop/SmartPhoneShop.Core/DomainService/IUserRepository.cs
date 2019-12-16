@@ -6,13 +6,13 @@ namespace SmartPhoneShop.Core.DomainService
 {
     public interface IUserRepository
     {
-        User CreateUser(User CreatedUser);
+        User CreateUser(User createdUser);
 
         List<User> GetAllUser();
 
         User GetUserById(int id);
 
-        User UpdateUser(User UpdatedUser);
+        User UpdateUser(User updatedUser);
 
         User DeleteUser(int id);
     }

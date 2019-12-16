@@ -36,14 +36,12 @@ namespace Infrastructure.SQL
 
             modelBuilder.Entity<User>()
                 .HasKey(u => new {u.Id});
-
         }
 
        public DbSet<User> Users { get; set; }
        public DbSet<SmartPhone> SmartPhones { get; set; }
        public DbSet<Cover> Covers { get; set; }
        public DbSet<Product> Products { get; set; }
-       //public DbSet<ShoppingCart> Carts { get; set; }
        public DbSet<Order> Orders { get; set; } 
        public DbSet<OrderLine> OrderLines { get; set; }
     }
