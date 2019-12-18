@@ -23,21 +23,21 @@ namespace SmartPhoneShop.API.Controllers
         [HttpPost]
         public IActionResult Login([FromBody] LoginInputModel model)
         {
-            var owner = _repository.GetAllUser().FirstOrDefault(u => u.Username == model.Username);
+            var user = _repository.GetAllUser().FirstOrDefault(u => u.Username == model.Username);
 
             // check if username exists
-            if (owner == null)
+            if (user == null)
                 return Unauthorized();
 
             // check if password is correct
-            if (!_authenticationHelper.VerifyPasswordHash(model.Password, owner.PasswordHash, owner.PasswordSalt))
+            if (!_authenticationHelper.VerifyPasswordHash(model.Password, user.PasswordHash, user.PasswordSalt))
                 return Unauthorized();
 
             // Authentication successful
             return Ok(new
             {
-                username = owner.Username,
-                token = _authenticationHelper.GenerateToken(owner)
+                username = user.Username,
+                token = _authenticationHelper.GenerateToken(user)
             });
         }
     }
